@@ -1,30 +1,30 @@
 import streamlit as st
 import google.generativeai as genai
 
-st.set_page_config(page_title="Veritas AI", page_icon="⚖️")
-
 st.title("🛡️ Veritas AI")
 
-# Barra lateral para a chave
+# Campo da Chave na lateral
 with st.sidebar:
-    api_key = st.text_input("Insira sua API Key:", type="password")
+    chave = st.text_input("Cole sua API Key aqui:", type="password")
 
-if api_key:
+if chave:
     try:
-        genai.configure(api_key=api_key)
-        # TENTATIVA 1: Usando o nome direto sem o "models/"
+        genai.configure(api_key=chave)
+        # Usando o nome mais simples possível do modelo
         model = genai.GenerativeModel('gemini-1.5-flash')
         
-        cenario = st.text_area("O que você observou?")
-
+        texto = st.text_area("Descreva o comportamento:")
+        
         if st.button("ANALISAR"):
-            if cenario:
-                response = model.generate_content(f"Analise como um perito: {cenario}")
-                st.divider()
+            if texto:
+                # Aqui o código tenta gerar a resposta
+                response = model.generate_content(f"Analise tecnicamente: {texto}")
+                st.markdown("### 📋 Relatório")
                 st.write(response.text)
             else:
-                st.warning("Digite algo para analisar.")
+                st.warning("Escreva algo antes.")
     except Exception as e:
-        st.error(f"Erro de configuração: {e}")
+        # Se der erro, ele vai mostrar EXATAMENTE o que é
+        st.error(f"Atenção: {e}")
 else:
-    st.info("Aguardando a sua API Key na barra lateral...")
+    st.info("Insira a chave na esquerda para começar.")
